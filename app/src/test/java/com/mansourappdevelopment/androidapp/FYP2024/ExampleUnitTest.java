@@ -1,4 +1,4 @@
-package com.mansourappdevelopment.androidapp.kidsafe;
+package com.fyp2024.parentalcontrol.androidapp;
 
 import org.junit.Test;
 

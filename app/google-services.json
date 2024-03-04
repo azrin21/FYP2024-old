@@ -1,42 +1,42 @@
 {
   "project_info": {
-    "project_number": "487946012349",
-    "firebase_url": "https://kidsafe-3a667.firebaseio.com",
-    "project_id": "kidsafe-3a667",
-    "storage_bucket": "kidsafe-3a667.appspot.com"
+    "project_number": "854523471831",
+    "firebase_url": "https://parentalcontrol-6067a-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "parentalcontrol-6067a",
+    "storage_bucket": "parentalcontrol-6067a.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:487946012349:android:d11fafe4263b5800",
+        "mobilesdk_app_id": "1:854523471831:android:90a249d303da4ac37a8d92",
         "android_client_info": {
-          "package_name": "com.mansourappdevelopment.androidapp.kidsafe"
+          "package_name": "com.fyp2024.parentalcontrol.androidapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "487946012349-jl6qltcr9jv44rmdrlh1l0dhfqkjvfgj.apps.googleusercontent.com",
+          "client_id": "854523471831-2f451ffjbt4oo461nt06m6au5s6orum9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.mansourappdevelopment.androidapp.kidsafe",
-            "certificate_hash": "54852af4dabff4d6c92c98c3c866c6d5d0ce3724"
+            "package_name": "com.fyp2024.parentalcontrol.androidapp",
+            "certificate_hash": "c58a5f0d51d5e25af109cf9b76a65c683be0f9e6"
           }
         },
         {
-          "client_id": "487946012349-brimdf043dkkn6de7uspdv91mo7rc9s0.apps.googleusercontent.com",
+          "client_id": "854523471831-2qt57s8g5gvbpurjud9e5r5jadtpqgj5.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD8ZY-iWZat49hZx753bGivVVxzmHrwc90"
+          "current_key": "AIzaSyD6dsMtaUpq-VbkpETcSpqqNALO66ryYHE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "487946012349-brimdf043dkkn6de7uspdv91mo7rc9s0.apps.googleusercontent.com",
+              "client_id": "854523471831-2qt57s8g5gvbpurjud9e5r5jadtpqgj5.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
