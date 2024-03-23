@@ -22,6 +22,7 @@ import com.fyp2024.parentalcontrol.androidapp.R;
 import com.fyp2024.parentalcontrol.androidapp.interfaces.OnAppClickListener;
 import com.fyp2024.parentalcontrol.androidapp.utils.Constant;
 
+// Parent choose app that want to lock from child phone in minute
 public class AppLockDialogFragment extends DialogFragment {
 	private Button btnLockApp;
 	private Button btnCancelLockApp;

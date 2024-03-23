@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+//Delete app on child phone and lock child phone
 public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ChildAdapterViewHolder> {
 	private Context context;
 	private ArrayList<Child> childs;

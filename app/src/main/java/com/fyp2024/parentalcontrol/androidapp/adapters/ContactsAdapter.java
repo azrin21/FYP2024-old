@@ -21,23 +21,23 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
 	private Context context;
 	private ArrayList<Contact> contacts;
 	private OnContactClickListener onContactClickListener;
-	
+
 	public ContactsAdapter(ArrayList<Contact> contacts, Context context) {
 		this.contacts = contacts;
 		this.context = context;
 	}
-	
+
 	public void setOnContactClickListener(OnContactClickListener onContactClickListener) {
 		this.onContactClickListener = onContactClickListener;
 	}
-	
+
 	@NonNull
 	@Override
 	public ContactsAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 		View view = LayoutInflater.from(context).inflate(R.layout.card_contact, viewGroup, false);
 		return new ContactsAdapter.ContactsAdapterViewHolder(view);
 	}
-	
+
 	@Override
 	public void onBindViewHolder(@NonNull ContactsAdapterViewHolder contactsAdapterViewHolder, int i) {
 		Contact contact = contacts.get(i);
@@ -46,20 +46,20 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
 		contactsAdapterViewHolder.txtContactBackground.setText(BackgroundGenerator.getFirstCharacters(contact.getContactName()));
 		contactsAdapterViewHolder.txtContactBackground.setBackground(BackgroundGenerator.getBackground(context));
 	}
-	
+
 	@Override
 	public int getItemCount() {
 		return contacts.size();
-		
+
 	}
-	
+
 	public class ContactsAdapterViewHolder extends RecyclerView.ViewHolder {
 		private TextView txtContactName;
 		private TextView txtContactNumber;
 		private ImageButton imgBtnCall;
 		private ImageButton imgBtnMessage;
 		private TextView txtContactBackground;
-		
+
 		public ContactsAdapterViewHolder(@NonNull View itemView) {
 			super(itemView);
 			txtContactName = itemView.findViewById(R.id.txtContactName);
@@ -72,7 +72,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
 					onContactClickListener.onCallClick(contacts.get(getAdapterPosition()).getContactNumber());
 				}
 			});
-			
+
 			imgBtnMessage = itemView.findViewById(R.id.imgBtnMessage);
 			imgBtnMessage.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -80,9 +80,9 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
 					onContactClickListener.onMessageClick(contacts.get(getAdapterPosition()).getContactNumber());
 				}
 			});
-			
+
 		}
 	}
-	
-	
+
+
 }

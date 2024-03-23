@@ -30,24 +30,24 @@ public class ContactsFragment extends Fragment implements OnContactClickListener
 	private TextView txtNoContacts;
 	private Bundle bundle;
 	private ArrayList<Contact> contacts;
-	
-	
+
+
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_contacts, container, false);
 	}
-	
-	
+
+
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		context = getContext();
 		getData();
-		
+
 		recyclerViewContacts = view.findViewById(R.id.recyclerViewContacts);
 		txtNoContacts = view.findViewById(R.id.txtNoContacts);
-		
+
 		if (contacts.isEmpty()) {
 			txtNoContacts.setVisibility(View.VISIBLE);
 			recyclerViewContacts.setVisibility(View.GONE);
@@ -57,37 +57,37 @@ public class ContactsFragment extends Fragment implements OnContactClickListener
 			recyclerViewContacts.setHasFixedSize(true);
 			recyclerViewContacts.setLayoutManager(new LinearLayoutManager(getContext()));
 			initializeAdapter(this);
-			
+
 		}
 	}
-	
-	
+
+
 	public void getData() {
 		bundle = getActivity().getIntent().getExtras();
 		if (bundle != null) {
 			contacts = bundle.getParcelableArrayList(Constant.CHILD_CONTACTS_EXTRA);
 		}
 	}
-	
+
 	public void initializeAdapter(OnContactClickListener onContactClickListener) {
 		contactsAdapter = new ContactsAdapter(contacts, context);
 		contactsAdapter.setOnContactClickListener(onContactClickListener);
 		recyclerViewContacts.setAdapter(contactsAdapter);
 	}
-	
-	
+
+
 	@Override
 	public void onCallClick(String contactNumber) {
 		Intent intent = new Intent(Intent.ACTION_DIAL);
 		intent.setData(Uri.parse("tel:" + contactNumber));
 		startActivity(intent);
 	}
-	
+
 	@Override
 	public void onMessageClick(String contactNumber) {
 		Intent intent = new Intent(Intent.ACTION_VIEW);
 		intent.setData(Uri.parse("sms:" + contactNumber));
 		startActivity(intent);
 	}
-	
+
 }

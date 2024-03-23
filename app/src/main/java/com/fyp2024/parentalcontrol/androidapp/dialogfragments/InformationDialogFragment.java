@@ -20,7 +20,15 @@ import com.fyp2024.parentalcontrol.androidapp.utils.Constant;
 public class InformationDialogFragment extends DialogFragment {
 	private TextView txtInformationBody;
 	private Button btnInformationOk;
-	
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		// Request window feature before creating the dialog
+		setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Theme_AppCompat_Dialog);
+	}
+
+
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -31,7 +39,7 @@ public class InformationDialogFragment extends DialogFragment {
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+//		getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 		
 		Bundle bundle = getArguments();

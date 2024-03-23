@@ -31,7 +31,8 @@
                 <TextView
                     style="@style/DialogFragmentBody"
                     android:layout_marginTop="@dimen/margin_48dp"
-                    android:text="@string/please_enter_this_child_parent_email" />
+                    android:text="@string/please_enter_this_child_parent_email"
+                    android:textColor="@color/Black" />
 
                 <EditText
                     android:id="@+id/txtParentEmail"

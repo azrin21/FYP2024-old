@@ -33,15 +33,15 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/kid"
-                    android:textColor="@color/flatui_midnight_blue"
+                    android:text="@string/parental"
+                    android:textColor="@color/Black"
                     android:textSize="@dimen/text_size_32sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/safe"
-                    android:textColor="@color/flatui_turquoise"
+                    android:text="@string/control"
+                    android:textColor="@color/MediumOrchid"
                     android:textSize="@dimen/text_size_32sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -94,7 +94,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/remember_me"
-                        android:textColor="@color/flatui_wet_asphalt" />
+                        android:textColor="@color/LightGrey" />
 
                     <TextView
                         android:id="@+id/txtForgotPassword"
@@ -102,7 +102,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end|center"
                         android:text="@string/forgot_your_password"
-                        android:textColor="@color/flatui_turquoise" />
+                        android:textColor="@color/MediumOrchid" />
                 </FrameLayout>
 
             </LinearLayout>
@@ -183,7 +183,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/new_here"
-                    android:textColor="@color/flatui_wet_asphalt"
+                    android:textColor="@color/Black"
                     android:textSize="@dimen/text_size_16sp" />
 
                 <TextView
@@ -192,7 +192,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_8dp"
                     android:text="@string/sign_up_here"
-                    android:textColor="@color/flatui_turquoise"
+                    android:textColor="@color/MediumOrchid"
                     android:textSize="@dimen/text_size_16sp"
                     android:textStyle="bold" />
             </LinearLayout>

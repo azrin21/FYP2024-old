@@ -13,7 +13,8 @@
     <TextView
         android:id="@+id/txtLockAppHeader"
         style="@style/HeaderText"
-        android:text="@string/lock_appname" />
+        android:text="@string/lock_appname"
+        android:textColor="@color/Black"/>
 
     <Spinner
         android:id="@+id/spinnerLockAppEntries"

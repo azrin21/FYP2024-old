@@ -22,14 +22,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    style="@style/TextViewSettingsHeader"
-                    android:text="@string/general" />
+<!--                <TextView-->
+<!--                    style="@style/TextViewSettingsHeader"-->
+<!--                    android:text="@string/general" />-->
 
-                <Button
-                    android:id="@+id/btnLanguageSelection"
-                    style="@style/ButtonSettings"
-                    android:text="@string/language" />
+<!--                <Button-->
+<!--                    android:id="@+id/btnLanguageSelection"-->
+<!--                    style="@style/ButtonSettings"-->
+<!--                    android:text="@string/language" />-->
             </LinearLayout>
 
             <LinearLayout

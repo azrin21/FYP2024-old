@@ -1,6 +1,7 @@
 package com.fyp2024.parentalcontrol.androidapp.services;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -60,6 +61,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static com.fyp2024.parentalcontrol.androidapp.NotificationChannelCreator.CHANNEL_ID;
+import static com.fyp2024.parentalcontrol.androidapp.activities.ChildSignedInActivity.CHILD_EMAIL;
 
 public class MainForegroundService extends Service {
 	public static final int NOTIFICATION_ID = 27;
@@ -98,17 +100,21 @@ public class MainForegroundService extends Service {
 	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		//String childEmail = intent.getStringExtra(CHILD_EMAIL);
-		//String notificationContent = "Monitoring device";
+		String childEmail = intent.getStringExtra(CHILD_EMAIL);
+		String notificationContent = "Monitoring device";
 		
 		FirebaseAuth auth = FirebaseAuth.getInstance();
 		FirebaseUser user = auth.getCurrentUser();
 		childEmail = user.getEmail();
 		uid = user.getUid();
-		
+//
+//		Intent notificationIntent = new Intent(this, ChildSignedInActivity.class);
+//		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+
 		Intent notificationIntent = new Intent(this, ChildSignedInActivity.class);
-		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-		
+		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+
+
 		Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
 				//.setContentTitle(notificationContent)
 				.setSmallIcon(R.drawable.ic_kidsafe).setContentIntent(pendingIntent).build();
@@ -149,7 +155,7 @@ public class MainForegroundService extends Service {
 			
 			@Override
 			public void onCancelled(@NonNull DatabaseError databaseError) {
-			
+
 			}
 		});
 
@@ -220,7 +226,7 @@ public class MainForegroundService extends Service {
 		phoneStateReceiver = new PhoneStateReceiver(user);
 		IntentFilter callIntentFilter = new IntentFilter(TelephonyManager.ACTION_PHONE_STATE_CHANGED);
 		registerReceiver(phoneStateReceiver, callIntentFilter);
-		
+
 		smsReceiver = new SmsReceiver(user);
 		IntentFilter smsIntentFilter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
 		registerReceiver(smsReceiver, smsIntentFilter);
@@ -283,10 +289,10 @@ public class MainForegroundService extends Service {
 			@Override
 			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 				if (dataSnapshot.exists()) {
-					//Log.i(TAG, "onDataChange: dataSnapshot value: "+dataSnapshot.getValue());
-					//Log.i(TAG, "onDataChange: dataSnapshot as a string: "+dataSnapshot.toString());
-					//Log.i(TAG, "onDataChange: dataSnapshot children: " + dataSnapshot.getChildren());
-					//Log.i(TAG, "onDataChange: dataSnapshot key: " + dataSnapshot.getKey());
+					Log.i(TAG, "onDataChange: dataSnapshot value: "+dataSnapshot.getValue());
+					Log.i(TAG, "onDataChange: dataSnapshot as a string: "+dataSnapshot.toString());
+					Log.i(TAG, "onDataChange: dataSnapshot children: " + dataSnapshot.getChildren());
+					Log.i(TAG, "onDataChange: dataSnapshot key: " + dataSnapshot.getKey());
 					
 					DataSnapshot nodeShot = dataSnapshot.getChildren().iterator().next();
 					Child child = nodeShot.getValue(Child.class);
@@ -338,12 +344,12 @@ public class MainForegroundService extends Service {
 		};
 		
 		//these two statements will be only executed when the permission is granted.
-		if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-			
-			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_UPDATE_INTERVAL, LOCATION_UPDATE_DISPLACEMENT, locationListener);
-			locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, LOCATION_UPDATE_INTERVAL, LOCATION_UPDATE_DISPLACEMENT, locationListener);
-			return;
-		}
+//		if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//
+//			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_UPDATE_INTERVAL, LOCATION_UPDATE_DISPLACEMENT, locationListener);
+//			locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, LOCATION_UPDATE_INTERVAL, LOCATION_UPDATE_DISPLACEMENT, locationListener);
+//			return;
+//		}
 		
 	}
 	
@@ -358,7 +364,7 @@ public class MainForegroundService extends Service {
 	
 	private void uploadContacts(ArrayList<Contact> contacts) {
 		databaseReference.child("childs").child(uid).child("contacts").setValue(contacts);
-		
+
 	}
 	
 	private void setFence(DataSnapshot dataSnapshot) {
@@ -370,7 +376,7 @@ public class MainForegroundService extends Service {
 		Log.i(TAG, "setFence: getFenceCenterLatitude " + childLocation.getFenceCenterLatitude());
 		Log.i(TAG, "setFence: getFenceCenterLongitude " + childLocation.getFenceCenterLongitude());
 		Log.i(TAG, "setFence: getFenceDiameter " + childLocation.getFenceDiameter());
-		
+
 		if (childLocation.isGeoFence()) {
 			Log.i(TAG, "setFence: true");
 			LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -381,7 +387,7 @@ public class MainForegroundService extends Service {
 					if (location != null) {
 						float[] distanceInMeters = new float[1];
 						Location.distanceBetween(childLocation.getFenceCenterLatitude(), childLocation.getFenceCenterLongitude(), location.getLatitude(), location.getLongitude(), distanceInMeters);
-						
+
 						boolean outOfFence = distanceInMeters[0] > childLocation.getFenceDiameter();
 						if (outOfFence) {
 							Log.i(TAG, "setFence: OUT OF FENCE");
@@ -393,34 +399,34 @@ public class MainForegroundService extends Service {
 						Log.i(TAG, "setFence: location is null");
 					}
 				}
-				
+
 				@Override
 				public void onStatusChanged(String provider, int status, Bundle extras) {
-				
+
 				}
-				
+
 				@Override
 				public void onProviderEnabled(String provider) {
-				
+
 				}
-				
+
 				@Override
 				public void onProviderDisabled(String provider) {
-				
+
 				}
 			};
-			
+
 			//these two statements will be only executed when the permission is granted.
-			if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-				
-				locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_UPDATE_INTERVAL, LOCATION_UPDATE_DISPLACEMENT, locationListener);
-				locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, LOCATION_UPDATE_INTERVAL, LOCATION_UPDATE_DISPLACEMENT, locationListener);
-				return;
-			}
-			
-			
+//			if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//
+//				locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_UPDATE_INTERVAL, LOCATION_UPDATE_DISPLACEMENT, locationListener);
+//				locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, LOCATION_UPDATE_INTERVAL, LOCATION_UPDATE_DISPLACEMENT, locationListener);
+//				return;
+//			}
+
+
 		}
-		
+
 	}
 
     /*private void changeDNS(String primaryDNS, String secondaryDNS) {
@@ -428,23 +434,24 @@ public class MainForegroundService extends Service {
         Settings.System.putString(getContentResolver(), Settings.System.WIFI_STATIC_DNS2, secondaryDNS);
     }*/
 	
+	@SuppressLint("Range")
 	public ArrayList<Contact> getContacts() {
 		ArrayList<Contact> contacts = new ArrayList<>();
 		ContentResolver contentResolver = getApplicationContext().getContentResolver();
 		Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
 		if (cursor.getCount() > 0) {
 			while (cursor.moveToNext()) {
-				String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+				@SuppressLint("Range") String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
 				if (cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
 					Cursor cursorInfo = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[]{id}, null);
-					
+
 					while (cursorInfo.moveToNext()) {
 						String contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
 						String contactNumber = cursorInfo.getString(cursorInfo.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 						Contact contact = new Contact(contactName, contactNumber);
 						contacts.add(contact);
 					}
-					
+
 					cursorInfo.close();
 				}
 			}
@@ -452,7 +459,7 @@ public class MainForegroundService extends Service {
 		}
 		return contacts;
 	}
-	
+
 	private void getInstalledApplications(/*ArrayList<App> onlineAppsList*/) {
 		PackageManager packageManager = getPackageManager();
 		List<ApplicationInfo> applicationInfoList = packageManager.getInstalledApplications(0);

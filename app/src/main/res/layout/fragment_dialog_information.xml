@@ -31,7 +31,8 @@
                     android:id="@+id/txtInformationBody"
                     style="@style/DialogFragmentBody"
                     android:layout_marginTop="@dimen/margin_48dp"
-                    android:text="@string/confirm" />
+                    android:text="@string/confirm"
+                    android:textColor="@color/Black"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"

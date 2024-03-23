@@ -16,18 +16,18 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_cloud_done" />
+<!--        <ImageView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@drawable/ic_cloud_done" />-->
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/connected"
-            android:textAlignment="center"
-            android:textColor="@color/flatui_turquoise"
-            android:textSize="@dimen/text_size_16sp" />
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/connected"-->
+<!--            android:textAlignment="center"-->
+<!--            android:textColor="@color/Black"-->
+<!--            android:textSize="@dimen/text_size_16sp" />-->
     </LinearLayout>
 
 </LinearLayout>

@@ -24,6 +24,12 @@ public class PermissionExplanationDialogFragment extends DialogFragment {
 	private Button btnOkPermission;
 	private Button btnCancelPermission;
 	private OnPermissionExplanationListener onPermissionExplanationListener;
+
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		// Request window feature before creating the dialog
+		setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Theme_AppCompat_Dialog);
+	}
 	
 	@Nullable
 	@Override
@@ -33,8 +39,8 @@ public class PermissionExplanationDialogFragment extends DialogFragment {
 	
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-		getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//		getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+//		getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 		txtPermissionBody = view.findViewById(R.id.txtPermissionBody);
 		if (getTargetFragment() != null)
 			onPermissionExplanationListener = (OnPermissionExplanationListener) getTargetFragment();

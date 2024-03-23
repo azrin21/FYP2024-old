@@ -1,5 +1,6 @@
 package com.fyp2024.parentalcontrol.androidapp.dialogfragments;
 
+import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -24,19 +25,29 @@ public class PasswordValidationDialogFragment extends DialogFragment {
 	private Button btnValidation;
 	private Button btnCancelValidation;
 	private OnPasswordValidationListener onPasswordValidationListener;
-	
+
+	@NonNull
+	@Override
+	public Dialog onCreateDialog(Bundle savedInstanceState) {
+		Dialog dialog = super.onCreateDialog(savedInstanceState);
+		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+		return dialog;
+	}
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_dialog_password_validation, container, false);
+//		return inflater.inflate(R.layout.fragment_dialog_password_validation, container, false);
+		View view = inflater.inflate(R.layout.fragment_dialog_password_validation, container, false);
+		return view;
 	}
 	
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		onPasswordValidationListener = (OnPasswordValidationListener) getActivity();
-		getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//		getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+//		getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 		
 		txtValidationPassword = view.findViewById(R.id.txtValidationPassword);
 		btnValidation = view.findViewById(R.id.btnValidation);

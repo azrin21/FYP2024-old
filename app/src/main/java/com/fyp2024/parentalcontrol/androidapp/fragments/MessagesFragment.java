@@ -41,25 +41,25 @@ public class MessagesFragment extends Fragment /*implements OnMessageDeleteClick
 	private RecyclerView recyclerViewMessages;
 	private MessageAdapter messageAdapter;
 	private TextView txtNoMessages;
-	
-	
+
+
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_messages, container, false);
 	}
-	
+
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		firebaseDatabase = FirebaseDatabase.getInstance();
 		databaseReference = firebaseDatabase.getReference("users");
-		
+
 		recyclerViewMessages = view.findViewById(R.id.recyclerViewMessages);
 		txtNoMessages = view.findViewById(R.id.txtNoMessages);
-		
+
 		getData();
-		
+
 		if (messagesList.isEmpty()) {
 			txtNoMessages.setVisibility(View.VISIBLE);
 			recyclerViewMessages.setVisibility(View.GONE);
@@ -68,15 +68,15 @@ public class MessagesFragment extends Fragment /*implements OnMessageDeleteClick
 			recyclerViewMessages.setVisibility(View.VISIBLE);
 			recyclerViewMessages.setHasFixedSize(true);
 			recyclerViewMessages.setLayoutManager(new LinearLayoutManager(getContext()));
-			
+
 			Collections.sort(messagesList, Collections.<Message>reverseOrder());    //descending order
 			initializeAdapter(messagesList/*, this*/);
 			initializeItemTouchHelper();
 		}
-		
-		
+
+
 	}
-	
+
 	private void getData() {
 		Bundle bundle = getActivity().getIntent().getExtras();
 		if (bundle != null) {
@@ -85,24 +85,24 @@ public class MessagesFragment extends Fragment /*implements OnMessageDeleteClick
 			childEmail = bundle.getString(CHILD_EMAIL_EXTRA);
 		}
 	}
-	
+
 	private void initializeAdapter(ArrayList<Message> messages/*, OnMessageDeleteClickListener onMessageDeleteClickListener*/) {
 		messageAdapter = new MessageAdapter(getContext(), messages);
 		//messageAdapter.setOnMessageDeleteClickListener(onMessageDeleteClickListener);
 		recyclerViewMessages.setAdapter(messageAdapter);
 	}
-	
+
 	private void initializeItemTouchHelper() {
 		ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 			@Override
 			public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
 				return false;
 			}
-			
+
 			@Override
 			public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
 				int position = viewHolder.getAdapterPosition();
-				
+
 				deleteMessage(messagesList.get(position));
 				messagesList.remove(position);
 				messageAdapter.notifyItemRemoved(position);
@@ -112,11 +112,11 @@ public class MessagesFragment extends Fragment /*implements OnMessageDeleteClick
 					recyclerViewMessages.setVisibility(View.GONE);
 				}
 			}
-			
+
 		};
 		new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerViewMessages);
 	}
-	
+
 	private void deleteMessage(final Message message) {
 		Query query = databaseReference.child("childs").orderByChild("email").equalTo(childEmail);
 		query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -134,17 +134,17 @@ public class MessagesFragment extends Fragment /*implements OnMessageDeleteClick
 							snapshot.getRef().removeValue();
 						}
 					}
-					
+
 					@Override
 					public void onCancelled(@NonNull DatabaseError databaseError) {
-					
+
 					}
 				});
 			}
-			
+
 			@Override
 			public void onCancelled(@NonNull DatabaseError databaseError) {
-			
+
 			}
 		});
 	}

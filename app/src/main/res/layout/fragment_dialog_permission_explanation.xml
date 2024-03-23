@@ -35,7 +35,8 @@
                     android:id="@+id/txtPermissionBody"
                     style="@style/DialogFragmentBody"
                     android:layout_marginTop="@dimen/margin_48dp"
-                    android:text="@string/permission_explanation" />
+                    android:text="@string/permission_explanation"
+                    android:textColor="@color/Black"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"

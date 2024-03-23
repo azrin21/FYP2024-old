@@ -54,7 +54,7 @@ public class ParentSignedInActivity extends AppCompatActivity implements OnChild
 	private ArrayList<Child> childs;
 	private CircleImageView imgParent;
 	private TextView txtParentName;
-	//private TextView txtChildCount;
+	private TextView txtChildCount;
 	private ProgressBar progressBar;
 	private ImageButton btnBack;
 	private ImageButton btnSettings;
@@ -190,9 +190,9 @@ public class ParentSignedInActivity extends AppCompatActivity implements OnChild
 			intent.putExtra(PARENT_EMAIL_EXTRA, user.getEmail());
 			intent.putExtra(CHILD_NAME_EXTRA, child.getName());
 			intent.putExtra(CHILD_EMAIL_EXTRA, child.getEmail());
-			intent.putExtra(CHILD_MESSAGES_EXTRA, child.getMessages());
-			intent.putExtra(CHILD_CALLS_EXTRA, child.getCalls());
-			intent.putExtra(Constant.CHILD_CONTACTS_EXTRA, child.getContacts());
+//			intent.putExtra(CHILD_MESSAGES_EXTRA, child.getMessages());
+//			intent.putExtra(CHILD_CALLS_EXTRA, child.getCalls());
+//			intent.putExtra(Constant.CHILD_CONTACTS_EXTRA, child.getContacts());
 			startActivity(intent);
 		}
 	}

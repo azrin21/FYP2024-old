@@ -42,39 +42,39 @@ public class CallsFragment extends Fragment /*implements OnCallDeleteClickListen
 	private RecyclerView recyclerViewCalls;
 	private CallAdapter callAdapter;
 	private TextView txtNoCalls;
-	
-	
+
+
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_calls, container, false);
 	}
-	
+
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		firebaseDatabase = FirebaseDatabase.getInstance();
 		databaseReference = firebaseDatabase.getReference("users");
 		getData();
-		
+
 		recyclerViewCalls = view.findViewById(R.id.recyclerViewCalls);
 		txtNoCalls = view.findViewById(R.id.txtNoCalls);
-		
+
 		if (callsList.isEmpty()) {
 			txtNoCalls.setVisibility(View.VISIBLE);
 			recyclerViewCalls.setVisibility(View.GONE);
-		} else {
-			txtNoCalls.setVisibility(View.GONE);
-			recyclerViewCalls.setVisibility(View.VISIBLE);
 			recyclerViewCalls.setHasFixedSize(true);
 			recyclerViewCalls.setLayoutManager(new LinearLayoutManager(getContext()));
-			
+
 			Collections.sort(callsList, Collections.<Call>reverseOrder());  //descending order
 			initializeAdapter(callsList/*, this*/);
 			initializeItemTouchHelper();
+		} else {
+			txtNoCalls.setVisibility(View.VISIBLE);
+			recyclerViewCalls.setVisibility(View.GONE);
 		}
 	}
-	
+
 	private void getData() {
 		Bundle bundle = getActivity().getIntent().getExtras();
 		if (bundle != null) {
@@ -83,20 +83,20 @@ public class CallsFragment extends Fragment /*implements OnCallDeleteClickListen
 			childEmail = bundle.getString(CHILD_EMAIL_EXTRA);
 		}
 	}
-	
+
 	private void initializeAdapter(ArrayList<Call> calls/*, OnCallDeleteClickListener onCallDeleteClickListener*/) {
 		callAdapter = new CallAdapter(getContext(), calls);
 		//callAdapter.setOnCallDeleteClickListener(onCallDeleteClickListener);
 		recyclerViewCalls.setAdapter(callAdapter);
 	}
-	
+
 	private void initializeItemTouchHelper() {
 		ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 			@Override
 			public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
 				return false;
 			}
-			
+
 			@Override
 			public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
 				int position = viewHolder.getAdapterPosition();
@@ -110,11 +110,11 @@ public class CallsFragment extends Fragment /*implements OnCallDeleteClickListen
 				}
 			}
 		};
-		
+
 		new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerViewCalls);
-		
+
 	}
-	
+
 	private void deleteCall(final Call call) {
 		Query query = databaseReference.child("childs").orderByChild("email").equalTo(childEmail);
 		query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -132,17 +132,17 @@ public class CallsFragment extends Fragment /*implements OnCallDeleteClickListen
 							snapshot.getRef().removeValue();
 						}
 					}
-					
+
 					@Override
 					public void onCancelled(@NonNull DatabaseError databaseError) {
-					
+
 					}
 				});
 			}
-			
+
 			@Override
 			public void onCancelled(@NonNull DatabaseError databaseError) {
-			
+
 			}
 		});
 	}

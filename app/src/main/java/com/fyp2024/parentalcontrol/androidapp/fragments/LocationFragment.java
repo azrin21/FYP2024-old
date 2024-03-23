@@ -77,20 +77,20 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 	private TextView txtNoLocation;
 	private FrameLayout layoutLocation;
 	private ProgressBar progressbarLocationFragment;
-	
-	
+
+
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_location, container, false);
 	}
-	
-	
+
+
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		mapView = view.findViewById(R.id.mapView);
-		
+
 		fabGeoFence = view.findViewById(R.id.fabGeoFence);
 		fabGeoFence.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -98,60 +98,60 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 				startGeoFencingDialogFragment();
 			}
 		});
-		
+
 		FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 		databaseReference = firebaseDatabase.getReference("users");
-		
+
 		context = getContext();
 		activity = getActivity();
-		
+
 		if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 			ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, requestCode);
 		} else {
-			
+
 			Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(context));
 			mapView.setTileSource(TileSourceFactory.MAPNIK);
 			mapView.setBuiltInZoomControls(false);
 			mapView.setMultiTouchControls(true);
-			
+
 			mapController = mapView.getController();
 			mapController.setZoom(18);
-			
+
 			//Log.i(TAG, "onViewCreated: " + locationNewOverlay.getMyLocation());
 			//Log.i(TAG, "onViewCreated: " + locationNewOverlay.isMyLocationEnabled());
 			//Log.i(TAG, "onViewCreated: " + locationNewOverlay.getMyLocationProvider().getLastKnownLocation());
-			
+
 			Log.i(TAG, "onViewCreated: executed");
 			locationNewOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(context), mapView);
 			locationNewOverlay.enableMyLocation();
 			Log.i(TAG, "onViewCreated: not null");
 			mapController.setCenter(locationNewOverlay.getMyLocation());
-			
-			
+
+
 			//mapController.animateTo(new GeoPoint(30.3198639, 31.3095743));
-			
+
 			progressbarLocationFragment = view.findViewById(R.id.progressbarLocationFragment);
 			progressbarLocationFragment.setVisibility(View.VISIBLE);
 			txtNoLocation = view.findViewById(R.id.txtNoLocation);
 			txtNoLocation.setVisibility(View.GONE);
 			layoutLocation = view.findViewById(R.id.layoutLocation);
 			layoutLocation.setVisibility(View.GONE);
-			
+
 			getData();
 			getUserLocation();
 			getChildLocation();
-			
+
 		}
 	}
-	
+
 	private void startGeoFencingDialogFragment() {
 		GeoFenceSettingDialogFragment geoFenceSettingDialogFragment = new GeoFenceSettingDialogFragment();
 		geoFenceSettingDialogFragment.setTargetFragment(LocationFragment.this, REQUEST_CODE);
 		geoFenceSettingDialogFragment.setCancelable(false);
 		geoFenceSettingDialogFragment.show(getFragmentManager(), Constant.GEO_FENCING_FRAGMENT_TAG);
 	}
-	
-	
+
+
 	public void onResume() {
 		super.onResume();
 		//this will refresh the osmdroid configuration on resuming.
@@ -160,7 +160,7 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 		Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(context));
 		mapView.onResume(); //needed for compass, my location overlays, v6.0.0 and up
 	}
-	
+
 	public void onPause() {
 		super.onPause();
 		//this will refresh the osmdroid configuration on resuming.
@@ -169,7 +169,7 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 		Configuration.getInstance().save(context, prefs);
 		mapView.onPause();  //needed for compass, my location overlays, v6.0.0 and up
 	}
-	
+
 	private void getData() {
 		Bundle bundle = getActivity().getIntent().getExtras();
 		if (bundle != null) {
@@ -177,7 +177,7 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 			childName = bundle.getString(CHILD_NAME_EXTRA);
 		}
 	}
-	
+
 	private void getChildLocation() {
 		Query query = databaseReference.child("childs").orderByChild("email").equalTo(childEmail);
 		query.addValueEventListener(new ValueEventListener() {
@@ -200,20 +200,20 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 						String body = getString(R.string.no_location_history_found) + " " + childName;
 						txtNoLocation.setText(body);
 						layoutLocation.setVisibility(View.GONE);
-						
+
 					}
-					
+
 				}
 			}
-			
+
 			@Override
 			public void onCancelled(@NonNull DatabaseError databaseError) {
-			
+
 			}
 		});
-		
+
 	}
-	
+
 	private void startInformationDialogFragment() {
 		InformationDialogFragment informationDialogFragment = new InformationDialogFragment();
 		Bundle bundle = new Bundle();
@@ -222,8 +222,8 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 		informationDialogFragment.setCancelable(false);
 		informationDialogFragment.show(getFragmentManager(), Constant.INFORMATION_DIALOG_FRAGMENT_TAG);
 	}
-	
-	
+
+
 	private void addMarkerForChild(Location location) {
 		mapView.getOverlays().clear();
 		GeoPoint childGeoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
@@ -237,32 +237,32 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 		mapController.setCenter(childGeoPoint);
 		addOverlays();
 	}
-	
+
 	private void addOverlays() {
-		
-		
+
+
 		//CompassOverlay compassOverlay = new CompassOverlay(context, new InternalCompassOrientationProvider(context), mapView);
 		//compassOverlay.enableCompass();
-		
+
 		RotationGestureOverlay rotationGestureOverlay = new RotationGestureOverlay(context, mapView);
 		rotationGestureOverlay.setEnabled(true);
-		
+
 		//DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
 		//ScaleBarOverlay scaleBarOverlay = new ScaleBarOverlay(mapView);
 		//scaleBarOverlay.setCentred(true);
 		//scaleBarOverlay.setScaleBarOffset(displayMetrics.widthPixels / 2, 10);
-		
+
 		//MinimapOverlay minimapOverlay = new MinimapOverlay(context, mapView.getTileRequestCompleteHandler());
 		//minimapOverlay.setWidth(displayMetrics.widthPixels / 5);
 		//minimapOverlay.setHeight(displayMetrics.heightPixels / 5);
-		
+
 		//mapView.getOverlays().add(locationNewOverlay);
 		//mapView.getOverlays().add(compassOverlay);
 		mapView.getOverlays().add(rotationGestureOverlay);
 		//mapView.getOverlays().add(scaleBarOverlay);
 		//mapView.getOverlays().add(minimapOverlay);
 	}
-	
+
 	private void getUserLocation() {
 		LocationManager locationManager = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
 		LocationListener locationListener = new LocationListener() {
@@ -273,33 +273,33 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 					Log.i(TAG, "onLocationChanged: location lat: " + location.getLatitude() + "location long: " + location.getLongitude());
 				}
 			}
-			
+
 			@Override
 			public void onStatusChanged(String provider, int status, Bundle extras) {
-			
+
 			}
-			
+
 			@Override
 			public void onProviderEnabled(String provider) {
-			
+
 			}
-			
+
 			@Override
 			public void onProviderDisabled(String provider) {
-			
+
 			}
 		};
-		
+
 		//these two statements will be only executed when the permission is granted.
 		if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-			
+
 			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_UPDATE_INTERVAL, LOCATION_UPDATE_DISPLACEMENT, locationListener);
 			locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, LOCATION_UPDATE_INTERVAL, LOCATION_UPDATE_DISPLACEMENT, locationListener);
 			return;
 		}
-		
+
 	}
-	
+
 	private void addMarkerForParent(Location location) {
         /*GeoPoint parentGeoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
 
@@ -310,9 +310,9 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
         parentMarker.setIcon(getResources().getDrawable(R.drawable.ic_parent));.
         mapView.getOverlays().add(parentMarker);
         mapController.setCenter(parentGeoPoint);*/
-		
+
 	}
-	
+
 	@Override
 	public void onGeoFenceSet(final String geoFenceCenter, final double geoFenceDiameter) {
 		Log.i(TAG, "onGeoFenceSet: locationOverlay: " + locationNewOverlay.toString());
@@ -326,7 +326,7 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 					Child child = nodeShot.getValue(Child.class);
 					Location childLocation = child.getLocation();
 					String key = nodeShot.getKey();
-					
+
 					if (geoFenceCenter.equals("You")) {
 						if (userLocation == null || !Validators.isLocationOn(context)) {
 							startPermissionExplanationDialogFragment();
@@ -348,27 +348,27 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 						startFencingService();
 						Toast.makeText(context, getString(R.string.center) + geoFenceCenter + " " + getString(R.string.diameter) + geoFenceDiameter, Toast.LENGTH_SHORT).show();
 					}
-					
+
 				}
 			}
-			
+
 			@Override
 			public void onCancelled(@NonNull DatabaseError databaseError) {
-			
+
 			}
 		});
-		
-		
+
+
 	}
-	
+
 	private void startFencingService() {
 		Intent serviceIntent = new Intent(getActivity(), GeoFencingForegroundService.class);
 		serviceIntent.putExtra(Constant.CHILD_EMAIL_EXTRA, childEmail);
 		serviceIntent.putExtra(Constant.CHILD_NAME_EXTRA, childName);
-		
+
 		ContextCompat.startForegroundService(getContext(), serviceIntent);
 	}
-	
+
 	private void startPermissionExplanationDialogFragment() {
 		PermissionExplanationDialogFragment permissionExplanationDialogFragment = new PermissionExplanationDialogFragment();
 		Bundle bundle = new Bundle();
@@ -378,16 +378,16 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 		permissionExplanationDialogFragment.setTargetFragment(this, Constant.PERMISSION_EXPLANATION_FRAGMENT);
 		permissionExplanationDialogFragment.show(getFragmentManager(), Constant.PERMISSION_EXPLANATION_FRAGMENT_TAG);
 	}
-	
+
 	@Override
 	public void onOk(int requestCode) {
 		startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
 	}
-	
+
 	@Override
 	public void onCancel(int switchId) {
 		Toast.makeText(context, getString(R.string.canceled), Toast.LENGTH_SHORT).show();
-		
+
 	}
-	
+
 }

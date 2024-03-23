@@ -26,8 +26,8 @@ public class SmsReceiver extends BroadcastReceiver {
 	private SmsManager smsManager;
 	private Context context;
 	//private HashMap<String, Object> messeges;
-	
-	
+
+
 	public SmsReceiver(FirebaseUser user) {
 		this.user = user;
 		//this.messeges = new HashMap<>();
@@ -35,19 +35,19 @@ public class SmsReceiver extends BroadcastReceiver {
 		firebaseDatabase = FirebaseDatabase.getInstance();
 		databaseReference = firebaseDatabase.getReference("users");
 	}
-	
+
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		this.context = context;
-		
+
 		Bundle bundle = intent.getExtras();
 		String senderPhoneNumber = null;
 		StringBuilder message;
-		
+
 		if (bundle != null) {
 			Object[] pdusObjs = (Object[]) bundle.get("pdus");
 			message = new StringBuilder();
-			
+
 			for (Object pdusObj : pdusObjs) {
 				SmsMessage currentMessage = SmsMessage.createFromPdu((byte[]) pdusObj);
 				senderPhoneNumber = currentMessage.getDisplayOriginatingAddress();
@@ -56,18 +56,18 @@ public class SmsReceiver extends BroadcastReceiver {
 			}
 			String timeReceived = DateUtils.getCurrentDateString();
 			String uid = user.getUid();
-			
+
 			uploadMessage(senderPhoneNumber, message.toString(), timeReceived, uid);
-			
+
 		}
-		
+
 	}
 
     /*private String getSmsReceivedTime(String format) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.US);
         return simpleDateFormat.format(Calendar.getInstance().getTime());
     }*/
-	
+
 	private void uploadMessage(String senderPhoneNumber, String messageBody, String timeReceived, String uid) {
 		Log.i(TAG, "uploadMessage: messageBody" + messageBody);
 		Log.i(TAG, "uploadMessage: senderPhoneNumber" + senderPhoneNumber);
@@ -78,26 +78,26 @@ public class SmsReceiver extends BroadcastReceiver {
         messeges.put("messageBody", messageBody);
         messeges.put("timeReceived", timeReceived);
         databaseReference.child("childs").child(uid).child("messages").push().setValue(messeges);*/
-		
+
 		Message message = new Message(senderPhoneNumber, messageBody, timeReceived, getContactName(senderPhoneNumber));
 		databaseReference.child("childs").child(uid).child("messages").push().setValue(message);
-		
-		
+
+
 	}
-	
+
 	private String getContactName(String phoneNumber) {
 		Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
 		String[] projection = new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME};
 		String contactName = Constant.UNKNOWN_NUMBER;
 		Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
-		
+
 		if (cursor != null) {
 			if (cursor.moveToFirst()) {
 				contactName = cursor.getString(0);
 			}
 			cursor.close();
 		}
-		
+
 		return contactName;
 	}
 }

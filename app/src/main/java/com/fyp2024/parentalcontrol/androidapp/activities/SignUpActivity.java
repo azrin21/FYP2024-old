@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.fyp2024.parentalcontrol.androidapp.activities.AccountVerificationActivity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,6 +38,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -209,7 +212,7 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 				databaseReference.child("parents").child(uid).child("profileImage").setValue(imageUri.toString());
 			else
 				databaseReference.child("childs").child(uid).child("profileImage").setValue(imageUri.toString());
-			
+
 		} else if (!googleAuth) {
 			final StorageReference profileImageStorageReference = storageReference.child(uid + "_profileImage");
 			profileImageStorageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -253,7 +256,7 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 			Parent p = new Parent(name, email);
 			databaseReference.child("parents").child(uid).setValue(p);
 		} else {
-			Child c = new Child(name, email, parentEmail);
+			Child c = new Child(name, email, parentEmail, generateRandomNumber());
 			databaseReference.child("childs").child(uid).setValue(c);
 		}
 	}
@@ -262,7 +265,7 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 		loadingDialogFragment.setCancelable(false);
 		loadingDialogFragment.show(fragmentManager, Constant.LOADING_FRAGMENT);
 	}
-	
+
 	private void stopLoadingFragment(LoadingDialogFragment loadingDialogFragment) {
 		loadingDialogFragment.dismiss();
 	}
@@ -328,7 +331,7 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 		intent.setAction(Intent.ACTION_GET_CONTENT);
 		startActivityForResult(intent, Constant.PICK_IMAGE_REQUEST);
 	}
-	
+
 	private void signInWithGoogle() {
 		if (Validators.isInternetAvailable(this)) {
 			GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.id)).requestEmail().build();
@@ -404,6 +407,41 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 	@Override
 	public void onModeSelected(String parentEmail) {
 		signUpRoutine(parentEmail);
+		int randomNumber = generateRandomNumber();
+
+		sendVerificationEmail(parentEmail, randomNumber);
+
+		Intent intent = new Intent(this, AccountVerificationActivity.class);
+		intent.putExtra("randomNumber", randomNumber);
+		startActivity(intent);
+	}
+	private int generateRandomNumber() {
+		// Generate and return a random number (e.g., between 1000 and 9999)
+		return (int) (Math.random() * 9000) + 1000;
+
+
+	}
+
+	private void sendVerificationEmail(String parentEmail, int randomNumber) {
+		databaseReference.child("parentEmails").child(parentEmail).addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+				if (dataSnapshot.exists()) {
+
+					FirebaseMessaging.getInstance().send(new RemoteMessage.Builder(parentEmail + "@your-email-domain")
+							.setMessageId(Integer.toString(randomNumber))
+							.build());
+				} else {
+					// Parent's email not found in the database
+					Toast.makeText(SignUpActivity.this, "Parent's email not found", Toast.LENGTH_SHORT).show();
+				}
+			}
+
+			@Override
+			public void onCancelled(@NonNull DatabaseError databaseError) {
+				// Handle database error
+			}
+		});
 	}
 	
 }

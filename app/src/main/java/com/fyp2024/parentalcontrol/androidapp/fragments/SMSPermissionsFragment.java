@@ -38,7 +38,7 @@ public class SMSPermissionsFragment extends Fragment implements CompoundButton.O
 	private OnFragmentChangeListener onFragmentChangeListener;
 	private Button btnPermissionsSmsNext;
 	private Button btnPermissionsSmsPrev;
-	
+
 	@Override
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		if (isChecked) {
@@ -46,18 +46,18 @@ public class SMSPermissionsFragment extends Fragment implements CompoundButton.O
 				case R.id.switchSendSmsPermission:
 					requestSendSmsPermission();
 					break;
-				
+
 				case R.id.switchReadSmsPermission:
 					requestReadSmsPermission();
 					break;
-				
+
 				case R.id.switchReceiveSmsPermission:
 					requestReceiveSmsPermission();
 					break;
 			}
 		}
 	}
-	
+
 	//TODO:: use ActivityCompat when in an activity and requestPermissions when in a fragment
 	private void requestSendSmsPermission() {
 		if (ContextCompat.checkSelfPermission(context, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
@@ -66,10 +66,10 @@ public class SMSPermissionsFragment extends Fragment implements CompoundButton.O
 			} else {
 				requestPermissions(new String[]{Manifest.permission.SEND_SMS}, Constant.SEND_SMS_PERMISSION_REQUEST_CODE);
 			}
-			
+
 		}
 	}
-	
+
 	private void startPermissionExplanationFragment(int requestCode, int id) {
 		PermissionExplanationDialogFragment explanationFragment = new PermissionExplanationDialogFragment();
 		Bundle bundle = new Bundle();
@@ -80,19 +80,19 @@ public class SMSPermissionsFragment extends Fragment implements CompoundButton.O
 		explanationFragment.setTargetFragment(this, Constant.PERMISSION_EXPLANATION_FRAGMENT);
 		explanationFragment.show(fragmentManager, Constant.PERMISSION_EXPLANATION_FRAGMENT_TAG);
 	}
-	
+
 	private void requestReadSmsPermission() {
 		if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
 			if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.READ_SMS)) {
 				startPermissionExplanationFragment(Constant.READ_SMS_PERMISSION_REQUEST_CODE, switchReadSmsPermission.getId());
-				
+
 			} else {
 				requestPermissions(new String[]{Manifest.permission.READ_SMS}, Constant.READ_SMS_PERMISSION_REQUEST_CODE);
 			}
-			
+
 		}
 	}
-	
+
 	private void requestReceiveSmsPermission() {
 		if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED) {
 			if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.RECEIVE_SMS)) {
@@ -100,10 +100,10 @@ public class SMSPermissionsFragment extends Fragment implements CompoundButton.O
 			} else {
 				requestPermissions(new String[]{Manifest.permission.RECEIVE_SMS}, Constant.RECEIVE_SMS_PERMISSION_REQUEST_CODE);
 			}
-			
+
 		}
 	}
-	
+
 	@Override
 	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 		switch (requestCode) {
@@ -112,48 +112,48 @@ public class SMSPermissionsFragment extends Fragment implements CompoundButton.O
 					Toast.makeText(context, getString(R.string.permission_granted), Toast.LENGTH_SHORT).show();
 					switchSendSmsPermission.setChecked(true);
 					//switchSendSmsPermission.setEnabled(false);
-					
+
 				} else {
 					Toast.makeText(context, getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
 					switchSendSmsPermission.setChecked(false);
 				}
-				
+
 				break;
-			
+
 			case Constant.READ_SMS_PERMISSION_REQUEST_CODE:
 				if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 					Toast.makeText(context, getString(R.string.permission_granted), Toast.LENGTH_SHORT).show();
 					switchReadSmsPermission.setChecked(true);
 					//switchReadSmsPermission.setEnabled(false);
-					
+
 				} else {
 					Toast.makeText(context, getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
 					switchReadSmsPermission.setChecked(false);
 				}
-				
+
 				break;
-			
+
 			case Constant.RECEIVE_SMS_PERMISSION_REQUEST_CODE:
 				if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 					Toast.makeText(context, getString(R.string.permission_granted), Toast.LENGTH_SHORT).show();
 					switchReceiveSmsPermission.setChecked(true);
 					//switchReceiveSmsPermission.setEnabled(false);
-					
+
 				} else {
 					Toast.makeText(context, getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
 					switchReceiveSmsPermission.setChecked(false);
 				}
-				
+
 				break;
 		}
 	}
-	
+
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_permissions_sms, container, false);
 	}
-	
+
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
@@ -162,7 +162,7 @@ public class SMSPermissionsFragment extends Fragment implements CompoundButton.O
 		layout = view;
 		fragmentManager = getFragmentManager();
 		onFragmentChangeListener = (OnFragmentChangeListener) activity;
-		
+
 		btnPermissionsSmsNext = view.findViewById(R.id.btnPermissionsSmsNext);
 		btnPermissionsSmsNext.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -172,7 +172,7 @@ public class SMSPermissionsFragment extends Fragment implements CompoundButton.O
 				else startInformationDialogFragment(getString(R.string.please_allow_permissions));
 			}
 		});
-		
+
 		btnPermissionsSmsPrev = view.findViewById(R.id.btnPermissionsSmsPrev);
 		btnPermissionsSmsPrev.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -180,7 +180,7 @@ public class SMSPermissionsFragment extends Fragment implements CompoundButton.O
 				onFragmentChangeListener.onFragmentChange(Constant.PERMISSIONS_MAIN_FRAGMENT);
 			}
 		});
-		
+
 		switchSendSmsPermission = view.findViewById(R.id.switchSendSmsPermission);
 		switchSendSmsPermission.setChecked(isSendSmsPermissionGranted());
 		switchSendSmsPermission.setOnCheckedChangeListener(this);
@@ -190,27 +190,27 @@ public class SMSPermissionsFragment extends Fragment implements CompoundButton.O
 		switchReceiveSmsPermission = view.findViewById(R.id.switchReceiveSmsPermission);
 		switchReceiveSmsPermission.setChecked(isReceiveSmsPermissionGranted());
 		switchReceiveSmsPermission.setOnCheckedChangeListener(this);
-		
-		
+
+
 	}
-	
+
 	private boolean checkAllPermissions() {
 		return isReadSmsPermissionGranted() && isSendSmsPermissionGranted() && isReceiveSmsPermissionGranted();
 	}
-	
+
 	private boolean isSendSmsPermissionGranted() {
 		return ContextCompat.checkSelfPermission(context, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED;
 	}
-	
+
 	private boolean isReadSmsPermissionGranted() {
 		return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED;
 	}
-	
+
 	private boolean isReceiveSmsPermissionGranted() {
 		return ContextCompat.checkSelfPermission(context, Manifest.permission.RECEIVE_SMS) == PackageManager.PERMISSION_GRANTED;
-		
+
 	}
-	
+
 	private void startInformationDialogFragment(String message) {
 		InformationDialogFragment informationDialogFragment = new InformationDialogFragment();
 		Bundle bundle = new Bundle();
@@ -219,7 +219,7 @@ public class SMSPermissionsFragment extends Fragment implements CompoundButton.O
 		informationDialogFragment.setCancelable(false);
 		informationDialogFragment.show(getChildFragmentManager(), Constant.INFORMATION_DIALOG_FRAGMENT_TAG);
 	}
-	
+
 	@Override
 	public void onOk(int requestCode) {
 		switch (requestCode) {
@@ -233,9 +233,9 @@ public class SMSPermissionsFragment extends Fragment implements CompoundButton.O
 				requestPermissions(new String[]{Manifest.permission.RECEIVE_SMS}, Constant.RECEIVE_SMS_PERMISSION_REQUEST_CODE);
 				break;
 		}
-		
+
 	}
-	
+
 	@Override
 	public void onCancel(int switchId) {
 		Switch pressedSwitch = layout.findViewById(switchId);

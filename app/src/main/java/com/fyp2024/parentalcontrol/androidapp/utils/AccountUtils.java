@@ -27,7 +27,7 @@ import com.google.firebase.storage.StorageReference;
 import com.fyp2024.parentalcontrol.androidapp.R;
 import com.fyp2024.parentalcontrol.androidapp.activities.LoginActivity;
 import com.fyp2024.parentalcontrol.androidapp.models.User;
-import com.fyp2024.parentalcontrol.androidapp.services.GeoFencingForegroundService;
+//import com.fyp2024.parentalcontrol.androidapp.services.GeoFencingForegroundService;
 import com.fyp2024.parentalcontrol.androidapp.services.MainForegroundService;
 
 public class AccountUtils {
@@ -52,11 +52,11 @@ public class AccountUtils {
 			e.printStackTrace();
 		}
 		
-		try {
-			context.stopService(new Intent(context, GeoFencingForegroundService.class));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		try {
+//			context.stopService(new Intent(context, GeoFencingForegroundService.class));
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 	}
 	
 	public static void logout(Context context) {

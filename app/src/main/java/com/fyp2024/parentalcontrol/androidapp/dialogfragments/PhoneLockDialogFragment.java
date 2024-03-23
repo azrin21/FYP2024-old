@@ -1,5 +1,6 @@
 package com.fyp2024.parentalcontrol.androidapp.dialogfragments;
 
+import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import com.fyp2024.parentalcontrol.androidapp.interfaces.OnChildClickListener;
 import com.fyp2024.parentalcontrol.androidapp.utils.Constant;
 import com.fyp2024.parentalcontrol.androidapp.utils.Validators;
 
+//parent lock child phone in hours and minutes
 public class PhoneLockDialogFragment extends DialogFragment {
 	private Button btnLock;
 	private Button btnCancelLock;
@@ -30,14 +32,23 @@ public class PhoneLockDialogFragment extends DialogFragment {
 	private LinearLayout layoutLockTime;
 	private EditText txtLockHours;
 	private EditText txtLockMinutes;
-	//private TextView txtLockHeader;
+	private TextView txtLockHeader;
 	private TextView txtLockBody;
 	private OnChildClickListener onChildClickListener;
-	
+
+	@Override
+	public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+		Dialog dialog = super.onCreateDialog(savedInstanceState);
+		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+		return dialog;
+	}
+
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_dialog_lock, container, false);
+		View view = inflater.inflate(R.layout.fragment_dialog_lock, container, false);
+		return view;
 	}
 
     /*@Override
@@ -48,14 +59,16 @@ public class PhoneLockDialogFragment extends DialogFragment {
 	
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-		getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+		super.onViewCreated(view, savedInstanceState);
+//		getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+//		getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
 		onChildClickListener = (OnChildClickListener) getActivity();
-		
+
 		Bundle bundle = getArguments();
 		String childName = bundle.getString(Constant.CHILD_NAME_EXTRA);
-		
-		
+
+
 		layoutLockTime = view.findViewById(R.id.layoutLockTime);
 		txtLockHours = view.findViewById(R.id.txtLockHours);
 		txtLockMinutes = view.findViewById(R.id.txtLockMinutes);
@@ -63,11 +76,11 @@ public class PhoneLockDialogFragment extends DialogFragment {
         /*txtLockHeader = (TextView) view.findViewById(R.id.txtLockHeader);
         String header = getString(R.string.lock) + " " + childName + getString(R.string.upper_dot_s) + " " + getString(R.string.phone);
         txtLockHeader.setText(header);*/
-		
+
 		txtLockBody = view.findViewById(R.id.txtLockBody);
 		String body = getString(R.string.lock) + " " + childName + getString(R.string.upper_dot_s) + " " + getString(R.string.phone) + " " + getString(R.string.now_or_after_a_period);
 		txtLockBody.setText(body);
-		
+
 		spinnerLockEntries = view.findViewById(R.id.spinnerLockEntries);
 		spinnerLockEntries.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
@@ -79,49 +92,51 @@ public class PhoneLockDialogFragment extends DialogFragment {
 					txtLockHours.requestFocus();
 				}
 			}
-			
+
 			@Override
 			public void onNothingSelected(AdapterView<?> parent) {
 				layoutLockTime.setVisibility(View.GONE);
-				
 			}
 		});
-		
+
 		btnLock = view.findViewById(R.id.btnLock);
 		btnLock.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				int hours = 0;
 				int minutes = 0;
-				//onChildClickListener.onLockDismiss();
+//				onChildClickListener.onLockDismiss();
 				if (spinnerLockEntries.getSelectedItemPosition() == 0) {
 					onChildClickListener.onLockPhoneSet(hours, minutes);
 					dismiss();
-				}
-				if (spinnerLockEntries.getSelectedItemPosition() == 1) {
+				} else if (spinnerLockEntries.getSelectedItemPosition() == 1) {
 					if (Validators.isValidHours(txtLockHours.getText().toString())) {
 						hours = Integer.parseInt(txtLockHours.getText().toString());
 					} else {
 						txtLockHours.setError(getResources().getString(R.string.maximum_is_23_hours));
 						txtLockHours.requestFocus();
+						return;
 					}
-					
+
 					if (Validators.isValidMinutes(txtLockMinutes.getText().toString())) {
 						minutes = Integer.parseInt(txtLockMinutes.getText().toString());
 					} else {
 						txtLockMinutes.setError(getResources().getString(R.string.maximum_is_59_minutes));
 						txtLockMinutes.requestFocus();
+						return;
 					}
-					
+
 					if (Validators.isValidHours(txtLockHours.getText().toString()) && Validators.isValidMinutes(txtLockMinutes.getText().toString())) {
 						onChildClickListener.onLockPhoneSet(hours, minutes);
 						dismiss();
 					}
+					onChildClickListener.onLockPhoneSet(hours, minutes);
+					dismiss();
+
 				}
-				
 			}
 		});
-		
+
 		btnCancelLock = view.findViewById(R.id.btnCancelLock);
 		btnCancelLock.setOnClickListener(new View.OnClickListener() {
 			@Override

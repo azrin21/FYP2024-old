@@ -25,19 +25,19 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageA
     /*public void setOnMessageDeleteClickListener(OnMessageDeleteClickListener onMessageDeleteClickListener) {
         this.onMessageDeleteClickListener = onMessageDeleteClickListener;
     }*/
-	
+
 	public MessageAdapter(Context context, ArrayList<Message> messages) {
 		this.context = context;
 		this.messages = messages;
 	}
-	
+
 	@NonNull
 	@Override
 	public MessageAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 		View view = LayoutInflater.from(context).inflate(R.layout.card_message, viewGroup, false);
 		return new MessageAdapterViewHolder(view);
 	}
-	
+
 	@Override
 	public void onBindViewHolder(@NonNull MessageAdapterViewHolder messageAdapterViewHolder, int i) {
 		Message message = messages.get(i);
@@ -52,14 +52,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageA
 			messageAdapterViewHolder.txtMessageBackground.setText(BackgroundGenerator.getFirstCharacters(message.getContactName()));
 			messageAdapterViewHolder.txtMessageBackground.setBackground(BackgroundGenerator.getBackground(context));
 		}
-		
+
 	}
-	
+
 	@Override
 	public int getItemCount() {
 		return messages.size();
 	}
-	
+
 	public class MessageAdapterViewHolder extends RecyclerView.ViewHolder {
 		private TextView txtSenderPhoneNumber;
 		private TextView txtMessageBody;
@@ -67,8 +67,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageA
 		private TextView txtSenderName;
 		private TextView txtMessageBackground;
 		//private Button btnDeleteMessage;
-		
-		
+
+
 		public MessageAdapterViewHolder(@NonNull View itemView) {
 			super(itemView);
 			txtSenderPhoneNumber = itemView.findViewById(R.id.txtSenderPhoneNumber);
@@ -85,7 +85,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageA
                     deleteMessage(position);
                 }
             });*/
-			
+
 		}
 	}
 
@@ -94,5 +94,5 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageA
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, messages.size());
     }*/
-	
+
 }

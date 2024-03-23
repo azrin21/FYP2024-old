@@ -25,8 +25,13 @@ public class AccountDeleteDialogFragment extends DialogFragment {
 	private Button btnDeleteAccount;
 	private Button btnCancelDeleteAccount;
 	private OnDeleteAccountListener onDeleteAccountListener;
-	
-	
+
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		// Request feature must be called before onCreate
+		setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Theme_AppCompat_Dialog);
+	}
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

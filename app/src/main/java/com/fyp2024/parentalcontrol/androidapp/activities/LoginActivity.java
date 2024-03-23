@@ -74,7 +74,7 @@ public class LoginActivity extends AppCompatActivity implements OnPasswordResetL
 		LocaleUtils.setAppLanguage(this);
 		
 		
-		//FirebaseApp.initializeApp(this);
+//		FirebaseApp.initializeApp(this);
 		auth = FirebaseAuth.getInstance();
 		firebaseDatabase = FirebaseDatabase.getInstance();
 		databaseReference = firebaseDatabase.getReference("users");

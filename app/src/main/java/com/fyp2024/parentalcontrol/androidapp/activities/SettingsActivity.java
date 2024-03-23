@@ -16,18 +16,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.fyp2024.parentalcontrol.androidapp.R;
 import com.fyp2024.parentalcontrol.androidapp.dialogfragments.AccountDeleteDialogFragment;
 import com.fyp2024.parentalcontrol.androidapp.dialogfragments.ConfirmationDialogFragment;
-import com.fyp2024.parentalcontrol.androidapp.dialogfragments.LanguageSelectionDialogFragment;
+//import com.fyp2024.parentalcontrol.androidapp.dialogfragments.LanguageSelectionDialogFragment;
 import com.fyp2024.parentalcontrol.androidapp.dialogfragments.PasswordChangingDialogFragment;
 import com.fyp2024.parentalcontrol.androidapp.interfaces.OnConfirmationListener;
 import com.fyp2024.parentalcontrol.androidapp.interfaces.OnDeleteAccountListener;
-import com.fyp2024.parentalcontrol.androidapp.interfaces.OnLanguageSelectionListener;
+//import com.fyp2024.parentalcontrol.androidapp.interfaces.OnLanguageSelectionListener;
 import com.fyp2024.parentalcontrol.androidapp.interfaces.OnPasswordChangeListener;
 import com.fyp2024.parentalcontrol.androidapp.utils.AccountUtils;
 import com.fyp2024.parentalcontrol.androidapp.utils.Constant;
 import com.fyp2024.parentalcontrol.androidapp.utils.LocaleUtils;
 import com.fyp2024.parentalcontrol.androidapp.utils.SharedPrefsUtils;
 
-public class SettingsActivity extends AppCompatActivity implements OnLanguageSelectionListener, OnConfirmationListener, OnPasswordChangeListener, OnDeleteAccountListener {
+public class SettingsActivity extends AppCompatActivity implements OnConfirmationListener, OnPasswordChangeListener, OnDeleteAccountListener {
 	private Button btnLanguageSelection;
 	private Button btnLogout;
 	private Button btnChangePassword;
@@ -60,13 +60,13 @@ public class SettingsActivity extends AppCompatActivity implements OnLanguageSel
 		txtTitle = findViewById(R.id.txtTitle);
 		txtTitle.setText(getString(R.string.settings));
 		
-		btnLanguageSelection = findViewById(R.id.btnLanguageSelection);
-		btnLanguageSelection.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				selectLanguage();
-			}
-		});
+//		btnLanguageSelection = findViewById(R.id.btnLanguageSelection);
+//		btnLanguageSelection.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View view) {
+//				selectLanguage();
+//			}
+//		});
 		
 		btnLogout = findViewById(R.id.btnLogout);
 		btnLogout.setOnClickListener(new View.OnClickListener() {
@@ -122,16 +122,16 @@ public class SettingsActivity extends AppCompatActivity implements OnLanguageSel
 		});
 		
 		
-		btnVisitWebsite = findViewById(R.id.btnVisitWebsite);
-		btnVisitWebsite.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				visitWebsite();
+//		btnVisitWebsite = findViewById(R.id.btnVisitWebsite);
+//		btnVisitWebsite.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View view) {
+//				visitWebsite();
 			}
-		});
-		
-	}
-	
+//		});
+//
+//	}
+//
 	private void showAbout() {
 		startActivity(new Intent(this, AboutActivity.class));
 	}
@@ -157,11 +157,11 @@ public class SettingsActivity extends AppCompatActivity implements OnLanguageSel
 		startActivity(Intent.createChooser(intent, getString(R.string.choose_email_client)));
 	}
 	
-	private void visitWebsite() {
-		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://xmansour.github.io/KidSafe"));
-		startActivity(intent);
-	}
-	
+//	private void visitWebsite() {
+//		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://xmansour.github.io/KidSafe"));
+//		startActivity(intent);
+//	}
+//
 	private void deleteAccount() {
 		AccountDeleteDialogFragment accountDeleteDialogFragment = new AccountDeleteDialogFragment();
 		accountDeleteDialogFragment.setCancelable(false);
@@ -183,32 +183,32 @@ public class SettingsActivity extends AppCompatActivity implements OnLanguageSel
 		confirmationDialogFragment.show(getSupportFragmentManager(), Constant.CONFIRMATION_FRAGMENT_TAG);
 	}
 	
-	private void selectLanguage() {
-		LanguageSelectionDialogFragment languageSelectionDialogFragment = new LanguageSelectionDialogFragment();
-		languageSelectionDialogFragment.setCancelable(false);
-		languageSelectionDialogFragment.show(getSupportFragmentManager(), Constant.LANGUAGE_SELECTION_DIALOG_FRAGMENT_TAG);
-	}
+//	private void selectLanguage() {
+//		LanguageSelectionDialogFragment languageSelectionDialogFragment = new LanguageSelectionDialogFragment();
+//		languageSelectionDialogFragment.setCancelable(false);
+//		languageSelectionDialogFragment.show(getSupportFragmentManager(), Constant.LANGUAGE_SELECTION_DIALOG_FRAGMENT_TAG);
+//	}
 	
-	@Override
-	public void onLanguageSelection(String language) {
-		String appLanguage = SharedPrefsUtils.getStringPreference(this, Constant.APP_LANGUAGE, "en");
-		if (language.equals("English") && !appLanguage.equals("en")) {
-			LocaleUtils.setLocale(this, "en");
-		} else if (language.equals("Arabic") && !appLanguage.equals("ar")) {
-			LocaleUtils.setLocale(this, "ar");
-			
-		}
-		
-		restartApp();
-		
-	}
+//	@Override
+//	public void onLanguageSelection(String language) {
+//		String appLanguage = SharedPrefsUtils.getStringPreference(this, Constant.APP_LANGUAGE, "en");
+//		if (language.equals("English") && !appLanguage.equals("en")) {
+//			LocaleUtils.setLocale(this, "en");
+//		} else if (language.equals("Arabic") && !appLanguage.equals("ar")) {
+//			LocaleUtils.setLocale(this, "ar");
+//
+//		}
+//
+//		restartApp();
+//
+//	}
 	
-	private void restartApp() {
-		Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		startActivity(intent);
-		
-	}
+//	private void restartApp() {
+//		Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
+//		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//		startActivity(intent);
+//
+//	}
 	
 	@Override
 	public void onConfirm() {

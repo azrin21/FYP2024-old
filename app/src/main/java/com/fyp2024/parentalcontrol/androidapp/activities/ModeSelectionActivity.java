@@ -25,7 +25,7 @@ public class ModeSelectionActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_mode_selection);
 		
 		txtParentSignUp = findViewById(R.id.txtParentSignUp);
-		imgParentSignUp = findViewById(R.id.imgParentSignUp);
+		imgParentSignUp = findViewById(R.id.ParentSignUp);
 		imgParentSignUp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -35,7 +35,7 @@ public class ModeSelectionActivity extends AppCompatActivity {
 		
 		
 		txtChildSignUp = findViewById(R.id.txtChildSignUp);
-		imgChildSignUp = findViewById(R.id.imgChildSignUp);
+		imgChildSignUp = findViewById(R.id.ChildSignUp);
 		imgChildSignUp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {

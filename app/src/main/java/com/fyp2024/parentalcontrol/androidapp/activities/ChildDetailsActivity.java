@@ -15,7 +15,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.fyp2024.parentalcontrol.androidapp.R;
 import com.fyp2024.parentalcontrol.androidapp.fragments.ActivityLogFragment;
 import com.fyp2024.parentalcontrol.androidapp.fragments.AppsFragment;
-import com.fyp2024.parentalcontrol.androidapp.fragments.LocationFragment;
+//import com.fyp2024.parentalcontrol.androidapp.fragments.LocationFragment;
 import com.fyp2024.parentalcontrol.androidapp.models.App;
 
 import java.util.ArrayList;
@@ -80,13 +80,13 @@ public class ChildDetailsActivity extends AppCompatActivity {
 					case R.id.navApps:
 						selectedFragment = new AppsFragment();
 						//bundle.putParcelableArrayList(APPS_EXTRA, apps);  //not needed since we're sending it from
-						//selectedFragment.setArguments(bundle);            //the ParentSignedInActivity
+//						selectedFragment.setArguments(bundle);            //the ParentSignedInActivity
 						break;
-					case R.id.navLocation:
-						selectedFragment = new LocationFragment();
-						//bundle.putString(CHILD_EMAIL_EXTRA, childEmail);
-						//selectedFragment.setArguments(bundle);
-						break;
+//					case R.id.navLocation:
+//						selectedFragment = new LocationFragment();
+//						//bundle.putString(CHILD_EMAIL_EXTRA, childEmail);
+//						//selectedFragment.setArguments(bundle);
+//						break;
 					case R.id.navActivityLog:
 						selectedFragment = new ActivityLogFragment();
 						break;

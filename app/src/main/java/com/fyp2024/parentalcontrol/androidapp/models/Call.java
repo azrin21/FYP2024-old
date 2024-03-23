@@ -11,7 +11,7 @@ public class Call implements Parcelable, Comparable<Call> {
 		public Call createFromParcel(Parcel in) {
 			return new Call(in);
 		}
-		
+
 		@Override
 		public Call[] newArray(int size) {
 			return new Call[size];
@@ -22,12 +22,12 @@ public class Call implements Parcelable, Comparable<Call> {
 	private String contactName;
 	private String callTime;
 	private String callDurationInSeconds;
-	
+
 	public Call() {
-	
+
 	}
-	
-	
+
+
 	public Call(String callType, String phoneNumber, String contactName, String callTime, String callDurationInSeconds) {
 		this.callType = callType;
 		this.phoneNumber = phoneNumber;
@@ -35,7 +35,7 @@ public class Call implements Parcelable, Comparable<Call> {
 		this.callTime = callTime;
 		this.callDurationInSeconds = callDurationInSeconds;
 	}
-	
+
 	protected Call(Parcel in) {
 		callType = in.readString();
 		phoneNumber = in.readString();
@@ -43,44 +43,44 @@ public class Call implements Parcelable, Comparable<Call> {
 		callTime = in.readString();
 		callDurationInSeconds = in.readString();
 	}
-	
+
 	public String getCallType() {
 		return callType;
 	}
-	
+
 	public void setCallType(String callType) {
 		this.callType = callType;
 	}
-	
+
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
-	
+
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-	
+
 	public String getContactName() {
 		return contactName;
 	}
-	
+
 	public void setContactName(String contactName) {
 		this.contactName = contactName;
 	}
-	
+
 	public String getCallDurationInSeconds() {
 		return callDurationInSeconds;
 	}
-	
+
 	public void setCallDurationInSeconds(String callDurationInSeconds) {
 		this.callDurationInSeconds = callDurationInSeconds;
 	}
-	
+
 	@Override
 	public int describeContents() {
 		return 0;
 	}
-	
+
 	@Override
 	public void writeToParcel(Parcel parcel, int i) {
 		parcel.writeString(callType);
@@ -89,17 +89,17 @@ public class Call implements Parcelable, Comparable<Call> {
 		parcel.writeString(callTime);
 		parcel.writeString(callDurationInSeconds);
 	}
-	
+
 	@Override
 	public int compareTo(Call call) {
 		return DateUtils.stringToDate(getCallTime(), DateUtils.FORMAT).compareTo(DateUtils.stringToDate(call.getCallTime(), DateUtils.FORMAT));
-		
+
 	}
-	
+
 	public String getCallTime() {
 		return callTime;
 	}
-	
+
 	public void setCallTime(String callTime) {
 		this.callTime = callTime;
 	}

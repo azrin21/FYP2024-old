@@ -48,7 +48,8 @@
                     android:layout_marginTop="@dimen/margin_32dp"
                     android:layout_marginEnd="@dimen/margin_32dp"
                     android:entries="@array/timer_entries"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:textColor="@color/Black"/>
 
                 <LinearLayout
                     android:id="@+id/layoutLockTime"
