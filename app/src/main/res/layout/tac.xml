@@ -1,42 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="300dp"
+    android:layout_height="300dp"
+    android:layout_gravity="center"
+    android:layoutDirection="locale"
+    android:focusableInTouchMode="true">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@android:color/transparent"
         android:orientation="vertical">
 
+        <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp">
 
-        <TextView
-            style="@style/DialogFragmentBody"
-            android:layout_marginTop="@dimen/margin_48dp"
-            android:text="TAC Number"
-            android:textColor="@color/Black" />
+            <LinearLayout
+                android:layout_width="280dp"
+                android:layout_height="240dp"
+                android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/editTextTac"
-            style="@style/DialogFragmentEditText"
-            android:inputType="number" />
+                <TextView
+                    android:id="@+id/txtTacBody"
+                    style="@style/DialogFragmentBody"
+                    android:layout_marginTop="30dp"
+                    android:text="Enter TAC Number"
+                    android:textColor="@color/Black" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginTop="@dimen/margin_8dp"
-            android:layout_marginBottom="@dimen/margin_8dp"
-            android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/editTextTac"
+                    style="@style/DialogFragmentEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:textAlignment="center" />
 
-            <Button
-                android:id="@+id/btnCancelTac"
-                style="@style/DialogFragmentButtonCancel" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/buttonSubmitTac"
-                style="@style/DialogFragmentButtonOk" />
-        </LinearLayout>
-    </LinearLayout>
+                    <Button
+                        android:id="@+id/btnCancelTac"
+                        style="@style/DialogFragmentButtonCancel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cancel" />
+
+                    <Button
+                        android:id="@+id/buttonSubmitTac"
+                        style="@style/DialogFragmentButtonOk"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="OK" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        
+        <ImageView
+            style="@style/DialogFragmentImage"
+            android:src="@drawable/ic_taclock" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
+</LinearLayout>

@@ -61,6 +61,14 @@
                     android:visibility="gone" />
 
                 <EditText
+                    android:id="@+id/txtParentPhoneNumber"
+                    style="@style/MainEditText"
+                    android:drawableStart="@drawable/ic_tac"
+                    android:hint="Parent's Phone Number"
+                    android:inputType="phone"
+                    android:visibility="gone" />
+
+                <EditText
                     android:id="@+id/txtSignUpPassword"
                     style="@style/MainEditText"
                     android:drawableStart="@drawable/ic_lock"

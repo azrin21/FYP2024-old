@@ -6,6 +6,7 @@ import java.util.HashMap;
 public class Child extends User {
 	private String parentEmail;
 	private int TAC;
+	private String phoneNumber;
 	private ArrayList<App> apps = new ArrayList<>();
 	private ArrayList<Contact> Contacts = new ArrayList<>();
 	private Location location;
@@ -24,6 +25,15 @@ public class Child extends User {
 		this.parentEmail = parentEmail;
 		this.TAC = TAC;
 		this.verified = false;
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getPhoneNumber() { // Getter for phoneNumber
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) { // Setter for phoneNumber
+		this.phoneNumber = phoneNumber;
 	}
 
 	public boolean getVerified() {

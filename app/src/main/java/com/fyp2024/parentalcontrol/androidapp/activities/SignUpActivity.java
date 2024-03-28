@@ -1,5 +1,7 @@
 package com.fyp2024.parentalcontrol.androidapp.activities;
 
+import static com.fyp2024.parentalcontrol.androidapp.utils.generateTAC.generateRandomNumber;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -78,7 +80,9 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 	private boolean googleAuth = false;
 	private boolean parent = true;
 	private boolean validParent = false;
-	
+	private EditText txtParentPhoneNumber;
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -96,6 +100,7 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 		
 		txtSignUpEmail = findViewById(R.id.txtSignUpEmail);
 		txtParentEmail = findViewById(R.id.txtParentEmail);
+		txtParentPhoneNumber = findViewById(R.id.txtParentPhoneNumber);
 		txtParentEmail.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -126,6 +131,7 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 		});
 		if (!parent) {
 			txtParentEmail.setVisibility(View.VISIBLE);
+			txtParentPhoneNumber.setVisibility(View.VISIBLE);
 		}
 		
 		txtSignUpPassword = findViewById(R.id.txtSignUpPassword);
@@ -155,10 +161,11 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 				signInWithGoogle();
 			}
 		});
-		
+
 	}
-	
-	
+
+
+
 	private void signUp(String email, String password) {
 		if (isValid()) {
 			final LoadingDialogFragment loadingDialogFragment = new LoadingDialogFragment();
@@ -168,7 +175,9 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 				public void onComplete(@NonNull Task<AuthResult> task) {
 					stopLoadingFragment(loadingDialogFragment);
 					if (task.isSuccessful()) {
-						signUpRoutine(txtParentEmail.getText().toString().toLowerCase());
+						String parentEmail = txtParentEmail.getText().toString().toLowerCase();
+						String parentPhoneNumber = txtParentPhoneNumber.getText().toString();
+						signUpRoutine(parentEmail, parentPhoneNumber);
 					} else {
 						String errorCode = ((FirebaseAuthException) task.getException()).getErrorCode();
 						switch (errorCode) {
@@ -192,10 +201,10 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 		}
 	}
 	
-	private void signUpRoutine(String parentEmail) {
+	private void signUpRoutine(String parentEmail, String parentPhoneNumber) {
 		uid = auth.getCurrentUser().getUid();
 		Log.i(TAG, "signUpRoutine: UID: " + uid);
-		addUserToDB(parentEmail, parent);
+		addUserToDB(parentEmail, parentPhoneNumber, parent);
 		uploadProfileImage(parent);
 		startAccountVerificationActivity();
 	}
@@ -240,7 +249,7 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 		}
 	}
 	
-	private void addUserToDB(String parentEmail, boolean parent) {
+	private void addUserToDB(String parentEmail, String parentPhoneNumber, boolean parent) {
 		String email;
 		String name;
 		if (googleAuth) {
@@ -257,6 +266,7 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 			databaseReference.child("parents").child(uid).setValue(p);
 		} else {
 			Child c = new Child(name, email, parentEmail, generateRandomNumber());
+			c.setPhoneNumber(parentPhoneNumber);
 			databaseReference.child("childs").child(uid).setValue(c);
 		}
 	}
@@ -406,7 +416,8 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 	
 	@Override
 	public void onModeSelected(String parentEmail) {
-		signUpRoutine(parentEmail);
+		String parentPhoneNumber = "1234567890"; // Default phone number
+		signUpRoutine(parentEmail, parentPhoneNumber);
 		int randomNumber = generateRandomNumber();
 
 		sendVerificationEmail(parentEmail, randomNumber);
@@ -415,12 +426,10 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 		intent.putExtra("randomNumber", randomNumber);
 		startActivity(intent);
 	}
-	private int generateRandomNumber() {
-		// Generate and return a random number (e.g., between 1000 and 9999)
-		return (int) (Math.random() * 9000) + 1000;
-
-
-	}
+//	private int generateRandomNumber() {
+//		// Generate and return a random number (e.g., between 1000 and 9999)
+//		return (int) (Math.random() * 9000) + 1000;
+//	}
 
 	private void sendVerificationEmail(String parentEmail, int randomNumber) {
 		databaseReference.child("parentEmails").child(parentEmail).addListenerForSingleValueEvent(new ValueEventListener() {
